@@ -28,6 +28,13 @@
 
     {% render 'meta-tags' %}
 
+    {% if template.suffix  == 'new' %}
+      {{ 'custom-product-page.css' | asset_url | stylesheet_tag }}
+      <script src="{{ 'custom-product-script.js' | asset_url }}" defer="defer"></script>
+
+    {% endif %}
+
+
     <script src="{{ 'constants.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'pubsub.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
