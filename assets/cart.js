@@ -5,6 +5,31 @@ class CartRemoveButton extends HTMLElement {
     this.addEventListener('click', (event) => {
       event.preventDefault();
       const cartItems = this.closest('cart-items') || this.closest('cart-drawer-items');
+      console.log(this.dataset)
+      let dataIndex=  this.dataset.index - 1
+      let cartItem;
+      fetch("/cart.js").then(response => response.text()).then(cartD => {
+        let cartData = JSON.parse(cartD)
+        cartItem = cartData
+        console.log(cartItem)
+        let atcTimeRef = cartItem.items[dataIndex].properties.price_ref  
+        
+        let sameTimeProducts = cartItem.items.filter(x => x.properties.price_ref == atcTimeRef)
+        console.log({sameTimeProducts})
+        let allIndexes = []
+        sameTimeProducts.map(product => {
+          allIndexes.push(document.querySelector(`[js-data-line-item][data-item-id="${product.variant_id}"]`).dataset.itemIndex)
+          
+        })
+        console.log({allIndexes})
+
+       
+        
+      })
+  
+      
+  
+      return
       cartItems.updateQuantity(this.dataset.index, 0);
     });
   }
@@ -112,6 +137,8 @@ class CartItems extends HTMLElement {
       sections: this.getSectionsToRender().map((section) => section.section),
       sections_url: window.location.pathname,
     });
+
+   
 
     fetch(`${routes.cart_change_url}`, { ...fetchConfig(), ...{ body } })
       .then((response) => {

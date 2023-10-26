@@ -69,13 +69,21 @@
         console.log({variantTitle})
 
         if(variantTitle == 'Black / Medium') {
+            console.log("dddddisc")
+            // for item[0] property value update
+            const propertyValueSelectorItem0 =  '[js-product-property-data]'
+
+            // to get track of bonus item, 
+            const newTimeStamp = Date.now()
+
             console.log("discounted variant..!")
             discountedOption= true
             let bonusVariant = "bonus"
             bonusVariantId = discountedProduct(bonusVariant)
             
+            document.querySelector(propertyValueSelectorItem0).value = newTimeStamp 
             let newFormItem = `<input type="hidden" value='1' name='items[1][quantity]' js-bonus-item>
-            <input type="hidden" name='items[1][id]' value='${bonusVariantId}' js-bonus-item>`
+            <input type="hidden" name='items[1][id]' value='${bonusVariantId}' js-bonus-item> <input type="hidden" name="items[1][properties][price_ref]" value='${newTimeStamp}'> `
 
             let formData_ = document.querySelector('#custom-product-form')
             formData_.insertAdjacentHTML('beforeEnd', newFormItem)
@@ -110,6 +118,7 @@
     function renderContent(variant) {
         const productPriceSelector = '[js-product-price]'
         const variantUpdateSelector = '[js-product-variant-data]'
+        
 
         const productPrice = container.querySelector(productPriceSelector)
         const variantIdUpdate = container.querySelector(variantUpdateSelector)
@@ -139,7 +148,6 @@
     }
     function addToCart(e) {
         e.preventDefault()
-        console.log(e.target, {bonusVariantId})
 
         const variantData = document.querySelector('[js-product-variant-data]')
 
