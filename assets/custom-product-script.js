@@ -23,12 +23,10 @@
     
     const productData = JSON.parse(productDataJson.innerHTML)
     const variants = productData.variants
-    console.log({productData})
 
     const selectedIndex = document.querySelector(`${optionSelectSelector}`).selectedIndex
     selectedSize = document.querySelectorAll(`${optionSelectSelector}`)[0][selectedIndex]
 
-    console.log({selectedSize})
     if(selectedIndex == 0 || selectedSize.value == "unselected") {
         atcBtn.classList.add('disabled')
     }else {
@@ -39,6 +37,7 @@
     selectOption.addEventListener('change', optionChange)
     addToCartForm.addEventListener('submit', addToCart)
 
+    // variant change event function
     function optionChange() {
         const target = event.target
         if(event.type == 'click') {
@@ -66,24 +65,19 @@
             variantTitle = selectedColorValue
         }
 
-        console.log({variantTitle})
-
         if(variantTitle == 'Black / Medium') {
-            console.log("dddddisc")
             // for item[0] property value update
             const propertyValueSelectorItem0 =  '[js-product-property-data]'
 
             // to get track of bonus item, 
             const newTimeStamp = Date.now()
 
-            console.log("discounted variant..!")
             discountedOption= true
             let bonusVariant = "bonus"
             bonusVariantId = discountedProduct(bonusVariant)
             
-            document.querySelector(propertyValueSelectorItem0).value = newTimeStamp 
             let newFormItem = `<input type="hidden" value='1' name='items[1][quantity]' js-bonus-item>
-            <input type="hidden" name='items[1][id]' value='${bonusVariantId}' js-bonus-item> <input type="hidden" name="items[1][properties][price_ref]" value='${newTimeStamp}'> `
+            <input type="hidden" name='items[1][id]' value='${bonusVariantId}' js-bonus-item>`
 
             let formData_ = document.querySelector('#custom-product-form')
             formData_.insertAdjacentHTML('beforeEnd', newFormItem)
@@ -110,11 +104,11 @@
             })
         }
 
-        console.log(selectedVariant)
         renderContent(selectedVariant)
 
 
     }
+    // to update ui stuff., i.e., price
     function renderContent(variant) {
         const productPriceSelector = '[js-product-price]'
         const variantUpdateSelector = '[js-product-variant-data]'
@@ -123,7 +117,7 @@
         const productPrice = container.querySelector(productPriceSelector)
         const variantIdUpdate = container.querySelector(variantUpdateSelector)
 
-        productPrice.innerHTML = Shopify.currency.active + variant.price / 100
+        productPrice.innerHTML = Shopify.money + variant.price / 100
         variantIdUpdate.setAttribute('value', variant.id)
 
         if(!variant.available) {
@@ -136,7 +130,6 @@
         const productForDiscount = JSON.parse(document.querySelector('[js-bonus-product-json]').innerHTML)
 
         const variants = productForDiscount.variants
-        console.log({variants}, {varTitle})
         variants.map(variant => {
             if(variant.title == varTitle) {
                 bonusVarId = variant.id
@@ -159,6 +152,7 @@
             body: fdd
         })
         .then(response => {
+            window.location.href = "/cart"
             return response.json()
         })
         .catch((err) => {

@@ -1,8 +1,9 @@
 .custom_product .image_wrapper img {
     width: 100%;
-    height: 70%;
+    height: 100%;
     display: block;
-    object-fit: contain;
+    object-fit: cover;
+    object-position: bottom;
 }
 
 .custom_product .product_sub_wrapper {
@@ -19,7 +20,7 @@
 }
 
 .custom_product .image_wrapper {
-    height: 100%;
+    height: 594px;
     width: 100%;
 }
 
@@ -153,4 +154,11 @@
     max-width: 24px;
     height: 24px;
     flex: 24px;
+}
+@media screen and (max-width: 767px) {
+    .custom_product .product_image {
+        max-width: 100%;
+        flex: 100%;
+        margin: 40px 0 0;
+    }
 }
