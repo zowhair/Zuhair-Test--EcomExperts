@@ -226,6 +226,7 @@ class PredictiveSearch extends SearchForm {
   }
 
   renderSearchResults(resultsMarkup) {
+    console.log({resultsMarkup})
     this.predictiveSearchResults.innerHTML = resultsMarkup;
     this.setAttribute('results', true);
 

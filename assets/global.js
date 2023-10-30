@@ -1257,3 +1257,8 @@ class ProductRecommendations extends HTMLElement {
 }
 
 customElements.define('product-recommendations', ProductRecommendations);
+
+// I would redirect to home, if user goes to soft winter jacket product
+// if(window.location.pathname.includes('dark-winter-jacket')) {
+//   window.location.href= '/'
+// }
