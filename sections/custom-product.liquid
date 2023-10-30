@@ -1,0 +1,90 @@
+
+<div class="custom_product" id="customProduct">
+  <div class="container page-width">
+    <div class="custom_product_wrapper">
+      <div class="product_sub_wrapper">
+          <div class="product_image">
+            <div class="image_wrapper">
+              <img src="{{ product.featured_image | img_url: 'master'  }}" alt="" js-current-img >
+            </div>
+          </div>
+          <div class="product_info">
+            <span class="product-vendor">{{ product.vendor }}</span>
+            <h2 class="product-title">{{ product.title }}</h2>
+            <span class="product-price" js-product-price>{{ product.price | money }}</span>
+            <div class="variants">
+              {% for product_option in product.options_with_values %}
+                {% if product_option.name == "Color" %}
+                  <h3 class="product_option-title">{{ product_option.name }}:</h3>
+                  <div class="product_option">
+                    {% for value in product_option.values %}
+                      <div class="product_option_color-wrapper">
+                        {% assign currentIndex = 0 %}
+                        {% for image in product.images %}
+                            {% assign imageAlt = image.alt | downcase %}
+                            {% assign valueDowncase = value | downcase %}
+                            
+                            {% if imageAlt == valueDowncase %}
+                              <input type="radio" value="{{ value }}" name="{{ product_option.name }}" id="{{ product_option.name }}--{{ value }}--{{ product_option.position }}" data-image-url="{{ image.src | product_img_url: 'master' }}" data-loop-index="{{ currentIndex }}" {% if currentIndex == 0 %} checked {% endif %} js-option hidden />
+                                <label for="{{ product_option.name }}--{{ value }}--{{ product_option.position }}" style="background-color: {{ value | downcase }}" class="swatch-option" >
+                                  
+                                </label>
+                            {% endif %}
+                            {% assign currentIndex = currentIndex | plus: 1 %}
+                        {% endfor %}
+                   
+                      </div>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+                {% if product_option.name == "Size" %}
+                  <h3 class="product_option-title">{{ product_option.name }}:</h3>
+                  <div class="product_option">
+                    <div class="product_option_size-wrapper">
+                    <select js-select-option>
+                        <option>unselected</option>
+                        {% for value in product_option.values %}
+                            <option>{{ value }}</option>
+                        {% endfor %}
+                    </select>
+                    </div>
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+            <form id="custom-product-form">
+              <input name="items[0][quantity]" type="hidden" value="1" />
+              <input
+                type="hidden"
+                name="items[0][id]"
+                value="{{ product.selected_or_first_available_variant.id }}"
+                
+                class="product-variant-id"
+                js-product-variant-data
+              >
+              {% comment %} <input name="items[1][quantity]" type="hidden" value="1" />
+              <input type="hidden" name="items[1][id]" value="46563400286486" data-quantity="1" js-product-variant-data1>
+                 {% endcomment %}
+              <button type="submit" class="add-to-cart">Add To Cart</button>
+              </div>
+          </form>
+          </div>
+      </div>
+     
+      <script type="text/json" js-custom-product-json>
+        {{ product | json }}
+      </script>
+      
+      <script type="text/json" js-bonus-product-json>
+        {{ all_products['dark-winter-jacket'] | json }} 
+      </script>
+
+    </div>
+
+{% schema %}
+{
+  "name": "Custom Product",
+  "tag": "section",
+  "class": "section"
+}
+{% endschema %}

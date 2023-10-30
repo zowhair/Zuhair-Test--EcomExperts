@@ -81,6 +81,9 @@
             {% if product.selected_or_first_available_variant.available == false or quantity_rule_soldout %}
               disabled
             {% endif %}
+            {% if product.handle == 'dark-winter-jacket'%}
+            disabled
+            {% endif %}
           >
             <span>
               {%- if product.selected_or_first_available_variant.available == false or quantity_rule_soldout -%}
@@ -102,7 +105,9 @@
             </div>
           </button>
           {%- if show_dynamic_checkout -%}
-            {{ form | payment_button }}
+            {% if product.handle == 'dark-winter-jacket'%}
+              {{ form | payment_button }}
+              {% endif %}
           {%- endif -%}
         </div>
       {%- endform -%}
